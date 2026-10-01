@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Muhammad Sarmad — Portfolio
 
-## Getting Started
+An animated personal portfolio built with **Next.js (App Router, TypeScript)**, **Tailwind CSS**, **GSAP** (`@gsap/react`, ScrollTrigger, SplitText, DrawSVG, MorphSVG), **Lenis** smooth scrolling and **React Three Fiber**.
 
-First, run the development server:
+## Run locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Production build:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+npm run lint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Requires Node 20.9+.
 
-## Learn More
+## Edit the content
 
-To learn more about Next.js, take a look at the following resources:
+All copy, links and projects are in **`src/data/portfolio.ts`**. Anything marked `// TODO: replace` is placeholder text. That includes the role and tagline, the about copy, skills, three placeholder projects, the experience timeline, and the email, LinkedIn and résumé links.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Empty links are hidden. The Contact section shows only the links you fill in (GitHub is set already).
+- For a résumé, put the PDF in `public/` (for example `public/resume.pdf`) and set `resume: "/resume.pdf"`.
+- Contact copy has one TODO in `src/components/sections/Contact.tsx`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Where things live
+
+| Path | What |
+| --- | --- |
+| `src/data/portfolio.ts` | All content |
+| `src/components/sections/` | Hero, About, Skills, Projects, Experience, Contact, Footer |
+| `src/components/three/` | 3D hero scene (lazy-loaded, client-only) plus a static fallback |
+| `src/components/ui/` | Preloader, nav, cursor, magnetic buttons, split-text reveal, SVG divider and signature |
+| `src/lib/gsap.ts` | GSAP plugin registration |
+| `src/app/globals.css` | Design tokens (colours, accent gradient), grain, utilities |
+
+## Motion and performance notes
+
+- **Reduced motion:** if `prefers-reduced-motion: reduce` is set, the site turns off Lenis, the preloader, the 3D render loop (a static gradient orb is shown instead), pinning and scroll animations. All content stays visible.
+- **3D:** loaded with `next/dynamic` and `ssr: false`. The device pixel ratio is capped at 1.75. Rendering pauses when the hero is off-screen. If WebGL is unavailable or the scene throws, the static fallback is shown.
+- **Fonts:** Instrument Serif, Geist and Geist Mono, self-hosted through `next/font`.
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Push this repo to GitHub.
+2. On [vercel.com/new](https://vercel.com/new), import the repo. Vercel detects Next.js automatically, so the default settings work.
+3. Click **Deploy**. Every later push to the main branch redeploys the site.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Or use the CLI: `npm i -g vercel && vercel` (and `vercel --prod` for production).
